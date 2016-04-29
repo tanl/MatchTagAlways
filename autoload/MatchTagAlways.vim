@@ -45,8 +45,15 @@ function! MatchTagAlways#Setup()
     return
   endif
 
-  " If this is not an allowed filetype, don't do anything
-  if !get( g:mta_filetypes, &filetype, 0 )
+  " If this is not an allowed filetype, don't do anything. Multiple filetypes
+  " are supported.
+  let l:filetype_supported=0
+  for l:current_ft in split(&filetype, "\\.")
+    if get(g:mta_filetypes, l:current_ft, 1)
+      let l:filetype_supported=1
+    endif
+  endfor
+  if l:filetype_supported == 0
     return
   endif
 
